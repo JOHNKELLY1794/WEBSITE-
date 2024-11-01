@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hollywood Movies Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e2e2e2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative; /* Allow for absolute positioning of watermark */
+        }
+        .quiz-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            transition: transform 0.2s;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        h1 {
+            text-align: center;
+            color: #d9534f;
+        }
+        .question {
+            margin: 15px 0;
+        }
+        .question p {
+            font-weight: bold;
+            color: #333;
+        }
+        .options {
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #5bc0de;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #31b0d5;
+        }
+        #result {
+            background: #dff0d8;
+            border: 1px solid #d6e9c6;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        #score {
+            color: #468847;
+            font-size: 1.2em;
+        }
+        #feedback {
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        /* Watermark Style */
+        .watermark {
+            position: absolute;
+            bottom: 10px;  /* Position from the bottom */
+            right: 10px;   /* Position from the right */
+            font-size: 16px; /* Font size of the watermark */
+            opacity: 0.3;  /* Make it semi-transparent */
+            color: #000;   /* Color of the watermark */
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Hollywood Movies Quiz</h1>
+    <form id="quizForm">
+        <!-- Questions -->
+        <div class="question">
+            <p>1. Who directed the movie "Inception"?</p>
+            <div class="options">
+                <input type="radio" name="q1" value="2"> Christopher Nolan<br>
+                <input type="radio" name="q1" value="0"> Steven Spielberg<br>
+                <input type="radio" name="q1" value="0"> Martin Scorsese<br>
+                <input type="radio" name="q1" value="0"> Quentin Tarantino<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>2. What is the highest-grossing movie of all time (as of 2021)?</p>
+            <div class="options">
+                <input type="radio" name="q2" value="0"> Titanic<br>
+                <input type="radio" name="q2" value="2"> Avatar<br>
+                <input type="radio" name="q2" value="0"> Star Wars: The Force Awakens<br>
+                <input type="radio" name="q2" value="0"> Avengers: Endgame<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>3. Who played Jack Dawson in "Titanic"?</p>
+            <div class="options">
+                <input type="radio" name="q3" value="2"> Leonardo DiCaprio<br>
+                <input type="radio" name="q3" value="0"> Matt Damon<br>
+                <input type="radio" name="q3" value="0"> Brad Pitt<br>
+                <input type="radio" name="q3" value="0"> Johnny Depp<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>4. What year was the original "Jurassic Park" released?</p>
+            <div class="options">
+                <input type="radio" name="q4" value="0"> 1990<br>
+                <input type="radio" name="q4" value="2"> 1993<br>
+                <input type="radio" name="q4" value="0"> 1995<br>
+                <input type="radio" name="q4" value="0"> 2000<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>5. Who is the main character in "The Matrix"?</p>
+            <div class="options">
+                <input type="radio" name="q5" value="0"> Neo<br>
+                <input type="radio" name="q5" value="2"> Morpheus<br>
+                <input type="radio" name="q5" value="0"> Agent Smith<br>
+                <input type="radio" name="q5" value="0"> Trinity<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>6. Which actress won an Academy Award for her role in "La La Land"?</p>
+            <div class="options">
+                <input type="radio" name="q6" value="2"> Emma Stone<br>
+                <input type="radio" name="q6" value="0"> Jennifer Lawrence<br>
+                <input type="radio" name="q6" value="0"> Natalie Portman<br>
+                <input type="radio" name="q6" value="0"> Meryl Streep<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>7. What is the name of the fictional African country in "Black Panther"?</p>
+            <div class="options">
+                <input type="radio" name="q7" value="0"> Zamunda<br>
+                <input type="radio" name="q7" value="2"> Wakanda<br>
+                <input type="radio" name="q7" value="0"> Elbonia<br>
+                <input type="radio" name="q7" value="0"> Genosha<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>8. Which movie features the famous line, "I'm gonna make him an offer he can't refuse"?</p>
+            <div class="options">
+                <input type="radio" name="q8" value="2"> The Godfather<br>
+                <input type="radio" name="q8" value="0"> Goodfellas<br>
+                <input type="radio" name="q8" value="0"> Scarface<br>
+                <input type="radio" name="q8" value="0"> Casino<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>9. What film won the Best Picture Oscar in 2020?</p>
+            <div class="options">
+                <input type="radio" name="q9" value="2"> Parasite<br>
+                <input type="radio" name="q9" value="0"> 1917<br>
+                <input type="radio" name="q9" value="0"> Ford v Ferrari<br>
+                <input type="radio" name="q9" value="0"> Joker<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>10. In which movie did Robert Downey Jr. first appear as Iron Man?</p>
+            <div class="options">
+                <input type="radio" name="q10" value="2"> Iron Man<br>
+                <input type="radio" name="q10" value="0"> The Avengers<br>
+                <input type="radio" name="q10" value="0"> Captain America: Civil War<br>
+                <input type="radio" name="q10" value="0"> Avengers: Endgame<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>11. Which animated film features a princess named Moana?</p>
+            <div class="options">
+                <input type="radio" name="q11" value="2"> Moana<br>
+                <input type="radio" name="q11" value="0"> Frozen<br>
+                <input type="radio" name="q11" value="0"> Tangled<br>
+                <input type="radio" name="q11" value="0"> The Little Mermaid<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>12. In "Finding Nemo," what type of fish is Nemo?</p>
+            <div class="options">
+                <input type="radio" name="q12" value="2"> Clownfish<br>
+                <input type="radio" name="q12" value="0"> Goldfish<br>
+                <input type="radio" name="q12" value="0"> Angelfish<br>
+                <input type="radio" name="q12" value="0"> Goldfish<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>13. Who directed the film "Pulp Fiction"?</p>
+            <div class="options">
+                <input type="radio" name="q13" value="2"> Quentin Tarantino<br>
+                <input type="radio" name="q13" value="0"> Steven Spielberg<br>
+                <input type="radio" name="q13" value="0"> Martin Scorsese<br>
+                <input type="radio" name="q13" value="0"> David Fincher<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>14. What movie features a character named Neo?</p>
+            <div class="options">
+                <input type="radio" name="q14" value="2"> The Matrix<br>
+                <input type="radio" name="q14" value="0"> Inception<br>
+                <input type="radio" name="q14" value="0"> Avatar<br>
+                <input type="radio" name="q14" value="0"> Terminator<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>15. What is the name of the hobbit played by Elijah Wood in "The Lord of the Rings"?</p>
+            <div class="options">
+                <input type="radio" name="q15" value="0"> Bilbo<br>
+                <input type="radio" name="q15" value="2"> Frodo<br>
+                <input type="radio" name="q15" value="0"> Samwise<br>
+                <input type="radio" name="q15" value="0"> Pippin<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>16. Who is the villain in "The Dark Knight"?</p>
+            <div class="options">
+                <input type="radio" name="q16" value="2"> The Joker<br>
+                <input type="radio" name="q16" value="0"> Bane<br>
+                <input type="radio" name="q16" value="0"> Scarecrow<br>
+                <input type="radio" name="q16" value="0"> Two-Face<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>17. What movie features the quote "Life is like a box of chocolates"?</p>
+            <div class="options">
+                <input type="radio" name="q17" value="2"> Forrest Gump<br>
+                <input type="radio" name="q17" value="0"> The Pursuit of Happyness<br>
+                <input type="radio" name="q17" value="0"> Cast Away<br>
+                <input type="radio" name="q17" value="0"> The Shawshank Redemption<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>18. Who played the lead role in "American Sniper"?</p>
+            <div class="options">
+                <input type="radio" name="q18" value="2"> Bradley Cooper<br>
+                <input type="radio" name="q18" value="0"> Chris Hemsworth<br>
+                <input type="radio" name="q18" value="0"> Jared Leto<br>
+                <input type="radio" name="q18" value="0"> Ryan Reynolds<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>19. What is the name of the dragon in "How to Train Your Dragon"?</p>
+            <div class="options">
+                <input type="radio" name="q19" value="2"> Toothless<br>
+                <input type="radio" name="q19" value="0"> Smaug<br>
+                <input type="radio" name="q19" value="0"> Saphira<br>
+                <input type="radio" name="q19" value="0"> Draco<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>20. Which movie features the character of a young girl named Lilo?</p>
+            <div class="options">
+                <input type="radio" name="q20" value="2"> Lilo & Stitch<br>
+                <input type="radio" name="q20" value="0"> Moana<br>
+                <input type="radio" name="q20" value="0"> Brave<br>
+                <input type="radio" name="q20" value="0"> Tangled<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>21. What is the name of the main villain in "Frozen"?</p>
+            <div class="options">
+                <input type="radio" name="q21" value="2"> Hans<br>
+                <input type="radio" name="q21" value="0"> Olaf<br>
+                <input type="radio" name="q21" value="0"> Kristoff<br>
+                <input type="radio" name="q21" value="0"> Sven<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>22. Who starred as Captain Jack Sparrow in "Pirates of the Caribbean"?</p>
+            <div class="options">
+                <input type="radio" name="q22" value="2"> Johnny Depp<br>
+                <input type="radio" name="q22" value="0"> Orlando Bloom<br>
+                <input type="radio" name="q22" value="0"> Geoffrey Rush<br>
+                <input type="radio" name="q22" value="0"> Bill Nighy<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>23. What type of animal is "Baloo" in "The Jungle Book"?</p>
+            <div class="options">
+                <input type="radio" name="q23" value="2"> Bear<br>
+                <input type="radio" name="q23" value="0"> Lion<br>
+                <input type="radio" name="q23" value="0"> Tiger<br>
+                <input type="radio" name="q23" value="0"> Monkey<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>24. Who directed the movie "Avatar"?</p>
+            <div class="options">
+                <input type="radio" name="q24" value="2"> James Cameron<br>
+                <input type="radio" name="q24" value="0"> George Lucas<br>
+                <input type="radio" name="q24" value="0"> Peter Jackson<br>
+                <input type="radio" name="q24" value="0"> Tim Burton<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>25. In which film does Tom Hanks play a character stranded on an island?</p>
+            <div class="options">
+                <input type="radio" name="q25" value="2"> Cast Away<br>
+                <input type="radio" name="q25" value="0"> The Terminal<br>
+                <input type="radio" name="q25" value="0"> Sleepless in Seattle<br>
+                <input type="radio" name="q25" value="0"> A Beautiful Day in the Neighborhood<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>26. What is the name of the character played by Natalie Portman in "Black Swan"?</p>
+            <div class="options">
+                <input type="radio" name="q26" value="2"> Nina Sayers<br>
+                <input type="radio" name="q26" value="0"> Lily<br>
+                <input type="radio" name="q26" value="0"> Odette<br>
+                <input type="radio" name="q26" value="0"> Clara<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>27. Who voices the character Lightning McQueen in "Cars"?</p>
+            <div class="options">
+                <input type="radio" name="q27" value="2"> Owen Wilson<br>
+                <input type="radio" name="q27" value="0"> Paul Rudd<br>
+                <input type="radio" name="q27" value="0"> Chris Pratt<br>
+                <input type="radio" name="q27" value="0"> Tom Hanks<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>28. What is the name of the wizarding school in "Harry Potter"?</p>
+            <div class="options">
+                <input type="radio" name="q28" value="2"> Hogwarts<br>
+                <input type="radio" name="q28" value="0"> Beauxbatons<br>
+                <input type="radio" name="q28" value="0"> Durmstrang<br>
+                <input type="radio" name="q28" value="0"> Ilvermorny<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>29. Who played the iconic role of Scarlett O'Hara in "Gone with the Wind"?</p>
+            <div class="options">
+                <input type="radio" name="q29" value="2"> Vivien Leigh<br>
+                <input type="radio" name="q29" value="0"> Bette Davis<br>
+                <input type="radio" name="q29" value="0"> Greer Garson<br>
+                <input type="radio" name="q29" value="0"> Lauren Bacall<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>30. Which film features the song “Let It Go”?</p>
+            <div class="options">
+                <input type="radio" name="q30" value="2"> Frozen<br>
+                <input type="radio" name="q30" value="0"> Moana<br>
+                <input type="radio" name="q30" value="0"> Tangled<br>
+                <input type="radio" name="q30" value="0"> Raya and the Last Dragon<br>
+            </div>
+        </div>
+
+        <!-- Questions 31-40 marked out of 40 -->
+        <div class="question">
+            <p>31. What is the primary setting for the movie "Moonlight"?</p>
+            <div class="options">
+                <input type="radio" name="q31" value="1"> Miami<br>
+                <input type="radio" name="q31" value="0"> New York<br>
+                <input type="radio" name="q31" value="0"> Chicago<br>
+                <input type="radio" name="q31" value="0"> Los Angeles<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>32. Who directed the film "Titanic"?</p>
+            <div class="options">
+                <input type="radio" name="q32" value="2"> James Cameron<br>
+                <input type="radio" name="q32" value="0"> Martin Scorsese<br>
+                <input type="radio" name="q32" value="0"> Ridley Scott<br>
+                <input type="radio" name="q32" value="0"> Steven Spielberg<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>33. Who played the female lead in "The Hunger Games"?</p>
+            <div class="options">
+                <input type="radio" name="q33" value="2"> Jennifer Lawrence<br>
+                <input type="radio" name="q33" value="0"> Shailene Woodley<br>
+                <input type="radio" name="q33" value="0"> Emma Watson<br>
+                <input type="radio" name="q33" value="0"> Kristen Stewart<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>34. What is the name of the antagonist in "The Silence of the Lambs"?</p>
+            <div class="options">
+                <input type="radio" name="q34" value="2"> Hannibal Lecter<br>
+                <input type="radio" name="q34" value="0"> Norman Bates<br>
+                <input type="radio" name="q34" value="0"> Michael Myers<br>
+                <input type="radio" name="q34" value="0"> Freddy Krueger<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>35. In "Toy Story," what is the name of the cowboy doll?</p>
+            <div class="options">
+                <input type="radio" name="q35" value="2"> Woody<br>
+                <input type="radio" name="q35" value="0"> Buzz Lightyear<br>
+                <input type="radio" name="q35" value="0"> Rex<br>
+                <input type="radio" name="q35" value="0"> Mr. Potato Head<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>36. Which actor won an Oscar for playing a character in "The Revenant"?</p>
+            <div class="options">
+                <input type="radio" name="q36" value="2"> Leonardo DiCaprio<br>
+                <input type="radio" name="q36" value="0"> Matthew McConaughey<br>
+                <input type="radio" name="q36" value="0"> Eddie Redmayne<br>
+                <input type="radio" name="q36" value="0"> Daniel Day-Lewis<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>37. What year was "The Wizard of Oz" originally released?</p>
+            <div class="options">
+                <input type="radio" name="q37" value="0"> 1935<br>
+                <input type="radio" name="q37" value="2"> 1939<br>
+                <input type="radio" name="q37" value="0"> 1945<br>
+                <input type="radio" name="q37" value="0"> 1950<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>38. Who played the female lead in "The Devil Wears Prada"?</p>
+            <div class="options">
+                <input type="radio" name="q38" value="2"> Anne Hathaway<br>
+                <input type="radio" name="q38" value="0"> Meryl Streep<br>
+                <input type="radio" name="q38" value="0"> Emily Blunt<br>
+                <input type="radio" name="q38" value="0"> Sandra Bullock<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>39. What superhero is portrayed by Gal Gadot in the DC Extended Universe?</p>
+            <div class="options">
+                <input type="radio" name="q39" value="2"> Wonder Woman<br>
+                <input type="radio" name="q39" value="0"> Supergirl<br>
+                <input type="radio" name="q39" value="0"> Catwoman<br>
+                <input type="radio" name="q39" value="0"> Batgirl<br>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>40. What animated movie features a talking snowman named Olaf?</p>
+            <div class="options">
+                <input type="radio" name="q40" value="2"> Frozen<br>
+                <input type="radio" name="q40" value="0"> Zootopia<br>
+                <input type="radio" name="q40" value="0"> Moana<br>
+                <input type="radio" name="q40" value="0"> The Incredibles<br>
+            </div>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+    <div id="result">
+        <h2 id="score"></h2>
+        <p id="feedback"></p>
+        <p id="grade"></p>
+    </div>
+</div>
+
+<div class="watermark">@2024 John Kelly Designer</div>
+
+<script>
+    document.getElementById('quizForm').onsubmit = function(event) {
+        event.preventDefault();
+        
+        let score = 0;
+        const totalQuestions = 40; // Total number of questions
+        const firstPartPoints = 60; // Total points for the first 30 questions
+        const secondPartPoints = 40; // Total points for the last 10 questions
+        
+        // Calculate score
+        const answers = new FormData(event.target);
+        for (let [key, value] of answers.entries()) {
+            score += parseInt(value);
+        }
+
+        // Calculate percentage
+        const percentage = (score / (firstPartPoints + secondPartPoints)) * 100;
+
+        // Determine feedback and grade
+        let feedback, grade;
+        if (percentage < 50) {
+            feedback = "You have failed. Better luck next time!";
+            grade = "Grade: F";
+        } else if (percentage >= 50 && percentage < 60) {
+            feedback = "You passed.";
+            grade = "Grade: D";
+        } else if (percentage >= 60 && percentage < 70) {
+            feedback = "You did well.";
+            grade = "Grade: C";
+        } else if (percentage >= 70 && percentage < 80) {
+            feedback = "Good work!";
+            grade = "Grade: B";
+        } else if (percentage >= 80) {
+            feedback = "Excellent work!";
+            grade = "Grade: A";
+        }
+
+        // Show result
+        document.getElementById('score').innerText = `You scored ${score} out of ${firstPartPoints + secondPartPoints}.`;
+        document.getElementById('feedback').innerText = feedback;
+        document.getElementById('grade').innerText = grade;
+
+        document.getElementById('result').style.display = 'block';
+    };
+</script>
+
+</body>
+</html>
